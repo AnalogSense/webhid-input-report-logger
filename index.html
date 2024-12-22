@@ -1,0 +1,16 @@
+<button onclick="begin();">Press me</button><br/>
+<textarea style="width:calc(100vw - 32px);height:calc(100vh - 64px)" readonly></textarea>
+<script>
+	function begin() {
+		navigator.hid.requestDevice({ filters: [] }).then(devs => {
+			console.log(devs);
+			for (const dev of devs) {
+				dev.open().then(() => {
+					dev.oninputreport = function(event) {
+						document.querySelector("textarea").value += [...new Uint8Array(event.data.buffer)].map(x => x.toString(16).padStart(2, "0")).join("") + "\n";
+					};
+				});
+			}
+		});
+	}
+</script>
