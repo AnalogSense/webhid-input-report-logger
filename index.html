@@ -2,6 +2,10 @@
 <textarea style="width:calc(100vw - 32px);height:calc(100vh - 64px)" readonly></textarea>
 <script>
 	function begin() {
+		if (!navigator.hid) {
+			alert("Sorry, your browser does not support WebHID.");
+			return;
+		}
 		navigator.hid.requestDevice({ filters: [] }).then(devs => {
 			console.log(devs);
 			for (const dev of devs) {
