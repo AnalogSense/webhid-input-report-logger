@@ -1,12 +1,23 @@
-<button onclick="begin();">Press me</button><br/>
+<button onclick="onButtonClick();">Connect</button><br/>
 <textarea style="width:calc(100vw - 32px);height:calc(100vh - 64px)" readonly></textarea>
 <script>
-	function begin() {
+	function onButtonClick() {
 		if (!navigator.hid) {
 			alert("Sorry, your browser does not support WebHID.");
 			return;
 		}
+		if (window.devs) {
+			document.querySelector("button").textContent = "Connect";
+			for (const dev of window.devs) {
+				dev.close();
+			}
+			window.devs = null;
+			return;
+		}
 		navigator.hid.requestDevice({ filters: [] }).then(devs => {
+			document.querySelector("button").textContent = "Disconnect";
+			document.querySelector("textarea").value = "";
+			window.devs = devs;
 			console.log(devs);
 			for (const dev of devs) {
 				dev.open().then(() => {
