@@ -1,4 +1,4 @@
-<button onclick="onButtonClick();">Connect</button><br/>
+<button onclick="onButtonClick();">Connect</button> <span></span><br/>
 <textarea style="width:calc(100vw - 32px);height:calc(100vh - 64px)" readonly></textarea>
 <script>
 	function onButtonClick() {
@@ -16,6 +16,7 @@
 		}
 		navigator.hid.requestDevice({ filters: [] }).then(devs => {
 			document.querySelector("button").textContent = "Disconnect";
+			document.querySelector("span").textContent = "Input reports from " + (devs[0].productName ? devs[0].productName : "Unknown Device") + " (" + devs[0].vendorId.toString(16).toUpperCase().padStart(4, "0") + ":" + devs[0].productId.toString(16).toUpperCase().padStart(4, "0") + "):";
 			document.querySelector("textarea").value = "";
 			window.devs = devs;
 			console.log(devs);
